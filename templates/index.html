@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang=”en”>
+
+    <head>
+        <meta charset=”utf-8">
+        <title>සිංහල ගී පද</title>
+    </head>
+
+    <script>
+	function filter(aggregate){
+	    // filter results based on keyword clicked
+        const keyword = aggregate.name;
+        let songs = document.getElementsByClassName('search-result-row');
+        const songs_list = Array.from(songs);
+        const filtered = songs_list.filter(keyword_filter, keyword);
+
+        const unfiltered_count = songs_list.length;
+        const filter_count = filtered.length;
+
+        // Update UI based on new results
+        const song_section = document.getElementById('song_section');
+        song_section.innerHTML = filtered.map(e => e.outerHTML).join()
+        const header = document.getElementById('results');
+        header.innerHTML = `<h2 class="lead" id="results"><strong class="text-danger">${filter_count}</strong> results out of ${unfiltered_count} matches the criteria</h2>`;
+
+        // Update filter list displayed on top of the web page
+        const filter_heading = document.getElementById("filter_head");
+        filter_heading.style.display = "inline-block"
+        const tag_list = document.getElementById("tags");
+        const tag = document.createElement("li");
+        tag.setAttribute("style","display:inline-block; padding:5px; margin:10px; border: 2px solid black; border-radius: 5px;");
+		tag.appendChild(document.createTextNode(keyword));
+		tag_list.appendChild(tag);
+	}
+
+    // filtering based on keyword
+	function keyword_filter(element){
+        const keyword = this;
+        content = element.innerText;
+		return content.includes(keyword)
+	}
+
+</script>
+
+    <body>
+        {% if init %}
+            <h1>Search Sinhala Songs </h1>
+        {% endif %}
+        <div class=”container”>
+            <form action="http://127.0.0.1:5000/" method="post">
+                <div class="input-group">
+                    <form action="http://127.0.0.1:5000/" method="post">
+                        <input type="text" class="search_term" name="search_term"  placeholder="What do you want to search?">
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+            </form>
+
+        {% if hits %}
+            <h2 id="results"><i>{{ num_results }}</i> results were found for "<i>{{  query  }}</i>"</h2>
+            <h4><span style="display: none" id = "filter_head">Filtered by: </span><ul id="tags" style="display: inline-block"></ul></h4>
+
+             <section id='song_section'>
+                {% for hit in hits %}
+                <article class="search-result-row">
+                    <div>
+                        <h3>{{ hit._source.title }}</h3>
+                        <ul>
+                            <li>
+                                Genre:
+                                    {% if hit._source.genre  is iterable and hit._source.genre  is not string %}
+                                        {% for genre in hit._source.genre  %}
+                                            {{genre}}
+                                            {% if not loop.last %}
+                                                ,
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {{hit._source.genre}}
+                                    {% endif %}
+                                </li>
+                            <li>
+                                Artist:
+                                    {% if hit._source.artist  is iterable and hit._source.artist  is not string %}
+                                        {% for artist in hit._source.artist  %}
+                                            {{artist}}
+                                            {% if not loop.last %}
+                                                ,
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {{hit._source.artist}}
+                                    {% endif %}
+                            </li>
+                            <li>Composed by: {{ hit._source.music }}</li>
+                            <li>Lyrics: {{ hit._source.lyrics }}</li>
+                            <li>Chords: {{ hit._source.guitar_key }}</li>
+                            <li>Beat: {{ hit._source.beat }}</span></li>
+                            <li>Views: {{ hit._source.number_of_visits }}</li>
+                            <li>Shares: {{ hit._source.number_of_shares }}</li>
+                        </ul>
+                        <p style="white-space: pre-line">{{ hit._source.song_lyrics }}</p>
+                        <hr>
+                    </div>
+                </article>
+                {% endfor %}
+                </section>
+                <section>
+<!--                    filtering functionality based on faceted search-->
+                    {% for key,value in aggs.items() %}
+                        <ul>{{ key }}
+                        {% for bucket in value.buckets %}
+                            {% if not bucket.key == "" %}
+                            <li><a href="#" name="{{ bucket.key }}" onclick="filter(this)" >{{ bucket.key }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                    {% endfor %}
+                </section>
+        {% elif not init %}
+            <hgroup>
+                <h2>No result found for <i>{{  query  }}</i></h2>
+            </hgroup>
+        {% endif %}
+        </div>
+    </body>
+</html>
