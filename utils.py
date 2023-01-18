@@ -3,8 +3,7 @@ import json
 from elasticsearch import Elasticsearch, helpers
 
 es_client = Elasticsearch(HOST="http://localhost", PORT=9200, http_auth=('elastic', 'cFGPaJgzB7iK9GRW_xgZ'))
-INDEX = 'songs'
-
+INDEX = 'song_metaphors_'
 
 
 # define mappings and configs
@@ -62,7 +61,7 @@ configs = {
             "id": {
                 "type": "long"
             },
-            "Song Title": {
+            "Title": {
                 "type": "text",
                 "fields": {
                         "keyword": {
@@ -73,7 +72,7 @@ configs = {
                 "analyzer": "sinhala-ngram",
                 "search_analyzer": "sinhala-search"
             },
-            "Lyrics ": {
+            "Lyrics": {
                 "type": "text",
                 "fields": {
                         "keyword": {
@@ -159,7 +158,7 @@ configs = {
                 "analyzer": "sinhala",
                 "search_analyzer": "sinhala-search"
             },
-            " Source domain": {
+            "Source": {
                 "type": "text",
                 "fields": {
                     "keyword": {
@@ -170,7 +169,7 @@ configs = {
                 "analyzer": "sinhala",
                 "search_analyzer": "sinhala-search"
             },
-            " Target domain": {
+            "Target": {
                 "type": "text",
                 "fields": {
                     "keyword": {
@@ -192,11 +191,11 @@ configs = {
 }
 
 def index():
-    # res = es_client.indices.create(index=INDEX, body=configs)
-    # print(res)
+    res = es_client.indices.create(index=INDEX, body=configs)
+    print(res)
 
     helpers.bulk(es_client, create_bulk())
-    # print(res)
+    print(res)
 
 
 def create_bulk():
@@ -207,8 +206,8 @@ def create_bulk():
         yield {
             "_index": INDEX,
             "_source": {
-                "Song Title": json_data['Song Title'],
-                "Lyrics ": json_data['Lyrics '],
+                "Title": json_data['Title'],
+                "Lyrics": json_data['Lyrics'],
                 "Lyricist": json_data['Lyricist'],
                 "Singer": json_data['Singer'],
                 "Music": json_data['Music'],
@@ -216,8 +215,8 @@ def create_bulk():
                 "Year": json_data['Year'],
                 "Metaphor": json_data['Metaphor'],
                 "Interpretation": json_data['Interpretation'],
-                " Source domain": json_data[' Source domain'],
-                " Target domain": json_data[' Target domain'],
+                "Source": json_data['Source'],
+                "Target": json_data['Target'],
             },
         }
 

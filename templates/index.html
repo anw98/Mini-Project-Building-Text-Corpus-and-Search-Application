@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang=”en”>
-
     <head>
-        <meta charset=”utf-8">
-        <title>සිංහල ගී පද</title>
-    </head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sinhala Song Metaphors Search Engine</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</head>
 
     <script>
 	function filter(aggregate){
@@ -21,7 +29,7 @@
         const song_section = document.getElementById('song_section');
         song_section.innerHTML = filtered.map(e => e.outerHTML).join()
         const header = document.getElementById('results');
-        header.innerHTML = `<h2 class="lead" id="results"><strong class="text-danger">${filter_count}</strong> results out of ${unfiltered_count} matches the criteria</h2>`;
+        header.innerHTML = `<h4 class="lead" id="results"><strong class="text-danger">${filter_count}</strong> results out of ${unfiltered_count} matches the criteria</h2>`;
 
         // Update filter list displayed on top of the web page
         const filter_heading = document.getElementById("filter_head");
@@ -42,23 +50,23 @@
 
 </script>
 
-    <body>
+    <body style="margin:50px;">
         {% if init %}
-            <h1>Search Sinhala Songs </h1>
+            <h3>Sinhala Songs with Metaphors</h3>
         {% endif %}
         <div class=”container”>
             <form action="http://127.0.0.1:5000/" method="post">
-                <div class="input-group">
+                <div class="input-group" >
                     <form action="http://127.0.0.1:5000/" method="post">
-                        <input type="text" class="search_term" name="search_term"  placeholder="What do you want to search?">
-                        <input type="submit" value="Submit">
+                        <input type="text" class="search_term" name="search_term"  placeholder="Type something to search.." style="background-color:#D1F2EB">
+                        <input type="submit" value="Submit" style="background-color:#76D7C4;border:#76D7C4;padding: 15px 32px;border-radius: 5px;margin-top:10px">
                     </form>
                 </div>
             </form>
 
         {% if hits %}
-            <h2 id="results"><i>{{ num_results }}</i> results were found for "<i>{{  query  }}</i>"</h2>
-            <h4><span style="display: none" id = "filter_head">Filtered by: </span><ul id="tags" style="display: inline-block"></ul></h4>
+            <h4 id="results"><i>{{ num_results }}</i> results were found for "<i>{{  query  }}</i>"</h4>
+            <h5><span style="display: none" id = "filter_head">Filtered by: </span><ul id="tags" style="display: inline-block"></ul></h5>
 
              <section id='song_section'>
                 {% for hit in hits %}
@@ -67,39 +75,44 @@
                         <h3>{{ hit._source.title }}</h3>
                         <ul>
                             <li>
-                                Genre:
-                                    {% if hit._source.genre  is iterable and hit._source.genre  is not string %}
-                                        {% for genre in hit._source.genre  %}
-                                            {{genre}}
+                                Song Title:
+                                    {% if hit._source.Title  is iterable and hit._source.Title  is not string %}
+                                        {% for Title in hit._source.Title  %}
+                                            {{Title}}
                                             {% if not loop.last %}
                                                 ,
                                             {% endif %}
                                         {% endfor %}
                                     {% else %}
-                                        {{hit._source.genre}}
+                                        {{hit._source.Title}}
                                     {% endif %}
                                 </li>
                             <li>
-                                Artist:
-                                    {% if hit._source.artist  is iterable and hit._source.artist  is not string %}
-                                        {% for artist in hit._source.artist  %}
-                                            {{artist}}
+                                Singer:
+                                    {% if hit._source.Singer  is iterable and hit._source.Singer  is not string %}
+                                        {% for Singer in hit._source.Singer  %}
+                                            {{Singer}}
                                             {% if not loop.last %}
                                                 ,
                                             {% endif %}
                                         {% endfor %}
                                     {% else %}
-                                        {{hit._source.artist}}
+                                        {{hit._source.Singer}}
                                     {% endif %}
                             </li>
-                            <li>Composed by: {{ hit._source.music }}</li>
-                            <li>Lyrics: {{ hit._source.lyrics }}</li>
-                            <li>Chords: {{ hit._source.guitar_key }}</li>
-                            <li>Beat: {{ hit._source.beat }}</span></li>
-                            <li>Views: {{ hit._source.number_of_visits }}</li>
-                            <li>Shares: {{ hit._source.number_of_shares }}</li>
+                            <li>Lyricist: {{ hit._source.Lyricist }}</li>
+                            <li>Music: {{ hit._source.Music }}</li>
+<!--                            <li>Lyrics: {{ hit._source.Lyrics }}</li>-->
+                            <li>Album: {{ hit._source.Album }}</li>
+                            <li>Year: {{ hit._source.Year }}</span></li>
+                            <li>Metaphor: {{ hit._source.Metaphor }}</li>
+                             <li>Interpretation: {{ hit._source.Interpretation }}</li>
+                            <li>Source: {{ hit._source.Source }}</li>
+                             <li>Target: {{ hit._source.Target }}</li>
+                              <li>Lyrics: </li>
+                        <p style="white-space: pre-line">{{ hit._source.Lyrics }}</p>
                         </ul>
-                        <p style="white-space: pre-line">{{ hit._source.song_lyrics }}</p>
+
                         <hr>
                     </div>
                 </article>
