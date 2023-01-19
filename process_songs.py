@@ -38,7 +38,7 @@ def clean_lyrics(song):
 
 # replace dots in people names by space
 def remove_dots_in_names(song):
-    names = ["Artist", "Music", "Lyrics"]
+    names = ["Singer", "Music", "Lyricist"]
     for i in names:
         field = song[i]
         if type(field) == type([]):
