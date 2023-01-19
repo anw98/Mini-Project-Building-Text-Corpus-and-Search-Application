@@ -5,7 +5,6 @@ from elasticsearch import Elasticsearch, helpers
 es_client = Elasticsearch(HOST="http://localhost", PORT=9200, http_auth=('elastic', 'cFGPaJgzB7iK9GRW_xgZ'))
 INDEX = 'song_metaphors_'
 
-
 # define mappings and configs
 
 configs = {
@@ -29,7 +28,7 @@ configs = {
                     "tokenizer": "icu_tokenizer",
                     "char_filter": ["punc_char_filter"]
                 },
-                "english":{
+                "english": {
                     "type": "custom",
                     "tokenizer": "classic",
                     "char_filter": ["punc_char_filter"],
@@ -64,10 +63,10 @@ configs = {
             "Title": {
                 "type": "text",
                 "fields": {
-                        "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                        },
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    },
                 },
                 "analyzer": "sinhala-ngram",
                 "search_analyzer": "sinhala-search"
@@ -75,10 +74,10 @@ configs = {
             "Lyrics": {
                 "type": "text",
                 "fields": {
-                        "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                        },
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    },
                 },
                 "analyzer": "sinhala-ngram",
                 "search_analyzer": "sinhala-search"
@@ -86,10 +85,10 @@ configs = {
             "Lyricist": {
                 "type": "text",
                 "fields": {
-                        "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                        },
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    },
                 },
                 "analyzer": "sinhala-ngram",
                 "search_analyzer": "sinhala-search"
@@ -97,10 +96,10 @@ configs = {
             "Singer": {
                 "type": "text",
                 "fields": {
-                        "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                        },
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    },
                 },
                 "analyzer": "sinhala-ngram",
                 "search_analyzer": "sinhala-search"
@@ -108,10 +107,10 @@ configs = {
             "Music": {
                 "type": "text",
                 "fields": {
-                        "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                        },
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    },
                 },
                 "analyzer": "sinhala-ngram",
                 "search_analyzer": "sinhala-search"
@@ -119,10 +118,10 @@ configs = {
             "Album": {
                 "type": "text",
                 "fields": {
-                        "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                        },
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    },
                 },
                 "analyzer": "sinhala-ngram",
                 "search_analyzer": "sinhala-search"
@@ -130,19 +129,19 @@ configs = {
             "Year": {
                 "type": "text",
                 "fields": {
-                        "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                        },
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    },
                 },
             },
             "Metaphor": {
                 "type": "text",
                 "fields": {
-                        "keyword": {
-                            "type": "keyword",
-                            "ignore_above": 256
-                        },
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    },
                 },
                 "analyzer": "sinhala",
                 "search_analyzer": "sinhala-search"
@@ -189,6 +188,7 @@ configs = {
         }
     }
 }
+
 
 def index():
     res = es_client.indices.create(index=INDEX, body=configs)

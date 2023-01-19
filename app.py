@@ -7,7 +7,7 @@ from elasticsearch import Elasticsearch
 from flask import Flask, render_template, request
 import json
 
-import process_search_query
+import process_search
 
 # import process_search_query
 
@@ -22,7 +22,7 @@ def search_box():
     print(request)
     if request.method == 'POST':
         query = request.form['search_term']
-        query_body = process_search_query.process_search_query(query)
+        query_body = process_search.process_search_query(query)
 
         response = es_client.search(
             index=INDEX,

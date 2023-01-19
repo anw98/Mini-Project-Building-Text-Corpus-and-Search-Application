@@ -2,15 +2,12 @@ import re
 
 
 def process_search_query(query):
-    possible_keywords = {}
-    possible_keywords["Singer"] = ['ගායකයා', 'ගයනවා', 'ගායනා', 'ගැයු', 'ගයන', 'ගයපු', 'කියපු', 'කියන']
-    possible_keywords["Lyricist"] = ['පද', 'රචනය', 'රචකයා', 'ලියන', 'ලීව', 'රචිත', 'ලියපු', 'ලිව්‌ව', 'රචනා', 'රචක',
-                                     'ලියපු']
-    possible_keywords["Music"] = ['සංගීත', 'තනු', 'තනුව', 'සංගීතය', 'සංගීතවත්']
-    possible_keywords["qualitative"] = ['හොදම', 'හොඳම', 'ජනප්‍රිය', 'ප්‍රචලිත', 'ප්‍රසිද්ධ', 'ජනප්‍රියම',
-                                        'ප්‍රචලිතම' 'ප්‍රචලිතම']
-    possible_keywords["Target"] = ['රූපක','රූපකයන්', 'උපමා', 'උපමාවන්']
-    possible_keywords["Year"] = ['වර්ෂය', 'වර්ෂයේ', 'අවුරුද්දේ', 'අවුරුද්ද']
+    possible_keywords = {"Singer": ['ගායකයා', 'ගයනවා', 'ගායනා', 'ගැයු', 'ගයන', 'ගයපු', 'කියපු', 'කියන'],
+                         "Lyricist": ['පද', 'රචනය', 'රචකයා', 'ලියන', 'ලීව', 'රචිත', 'ලියපු', 'ලිව්‌ව', 'රචනා', 'රචක',
+                                      'ලියපු'], "Music": ['සංගීත', 'තනු', 'තනුව', 'සංගීතය', 'සංගීතවත්'],
+                         "qualitative": ['හොදම', 'හොඳම', 'ජනප්‍රිය', 'ප්‍රචලිත', 'ප්‍රසිද්ධ', 'ජනප්‍රියම',
+                                         'ප්‍රචලිතම' 'ප්‍රචලිතම'], "Target": ['රූපක', 'රූපකයන්', 'උපමා', 'උපමාවන්'],
+                         "Year": ['වර්ෂය', 'වර්ෂයේ', 'අවුරුද්දේ', 'අවුරුද්ද']}
 
     tokens = query.strip().split(" ")
 
@@ -32,8 +29,7 @@ def process_search_query(query):
               'Interpretation': 1,
               'Source': 1,
               'Target': 1,
-              'Interpretation':1}
-
+              'Interpretation': 1}
 
     # increment boosts if keywords related to the field is in tokens
     for token in tokens:
@@ -75,7 +71,6 @@ def process_search_query(query):
     processed_query = " ".join(tokens)
     print("Processed query :", processed_query)
     print("Boosted fields :", boost_fields)
-
 
     print("Normal multi search query from :", processed_query)
     body = {

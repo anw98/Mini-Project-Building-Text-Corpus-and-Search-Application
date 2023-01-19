@@ -1,11 +1,10 @@
 import json
 import re
-
 import googletrans
 from googletrans import Translator
 
 
-# Fill missing valies by ""
+# Fill missing values by "නොදනී"
 def fill_missing(song):
     if "Lyricist" not in song or song["Lyricist"] == "Unknown":
         song['Lyricist'] = "නොදනී"
@@ -20,6 +19,7 @@ def fill_missing(song):
         song['Album'] = "නොදනී"
     return song
 
+
 # clean lyrics corpus
 def clean_lyrics(song):
     lyrics = song['Lyrics']
@@ -28,8 +28,7 @@ def clean_lyrics(song):
     final = []
     for i, line in enumerate(lines):
         line = line.strip()
-        line = re.sub('[.!?\\-—]', '', line)
-        if not line or line.isspace() or '\u200d' in line:
+        if not line or line.isspace():
             pass
         else:
             final.append(line)
@@ -73,6 +72,7 @@ def process():
         # clean song lyrics
         song = clean_lyrics(song)
         print(song)
+
         # write processed data to processed/ directory
         with open('processed/' + str(i) + '.json', 'w') as f:
             json.dump(song, f)
