@@ -36,10 +36,24 @@ def clean_lyrics(song):
     return song
 
 
+# replace dots in people names by space
+def remove_dots_in_names(song):
+    names = ["Artist", "Music", "Lyrics"]
+    for i in names:
+        field = song[i]
+        if type(field) == type([]):
+            for j in range(len(field)):
+                field[j] = field[j].replace(".", " ")
+        else:
+            field = field.replace(".", " ")
+        song.update({i: field})
+    return song
+
+
 # translate sinhala artist name, composer name, lyricist name and genre to sinhala
 def translate(song):
     translator = Translator()
-    fields_to_translate = ["Lyricist", "Singer", "Music", "Album"]
+    fields_to_translate = ["Lyricist", "Singer", "Music"]
     for i in fields_to_translate:
         song[i] = song[i].split(' ')
         if type(song[i]) == list:
